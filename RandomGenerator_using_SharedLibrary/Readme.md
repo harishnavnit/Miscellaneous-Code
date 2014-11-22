@@ -12,9 +12,9 @@ $ gcc -shared -o librand.so generate.o
 
 ## Setting necessary environment variables and compiling with path
 ``` bash
-$ gcc -L/media/dennis/66b8b69c-684f-45c2-955a-54d30cd7aa6d/home/harish/Documents/Codes/Miscellaneous-Code/RandomGenerator_using_SharedLibrary -Wall -o random main.c -lrand
+$ gcc -L/Path/to/your/shared/object -Wall -o random main.c -lrand
 
-$ export LD_LIBRARY_PATH=/media/dennis/66b8b69c-684f-45c2-955a-54d30cd7aa6d/home/harish/Documents/Codes/Miscellaneous-Code/RandomGenerator_using_SharedLibrary:$LD_LIBRARY_PATH
+$ export LD_LIBRARY_PATH=/Path/to/your/shared/object:$LD_LIBRARY_PATH
 ```
 
 ## Run the executable
