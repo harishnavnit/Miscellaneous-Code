@@ -1,4 +1,6 @@
-/* Given a set functional dependencies of the type a->b, find the closure of a */
+/* Given a set functional dependencies of the type a->b, find the closure of 'a'
+ * Also check if 'a' is a superkey
+ */
 
 #include <iostream>
 #include <cstdlib>
@@ -10,9 +12,10 @@
 using namespace std;
 
 /* Function prototype */
-void find_closure(multimap<string, string> , int , string );
-void remove_duplicate_attirbutes_in_closure(vector<string>, string);
-void display_closure(vector<string>, string );
+void display_closure                        (vector<string>, string );
+void find_closure                           (multimap<string, string> , int , string );
+bool is_superKey                            (multimap<string, string>, vector<string>, string );
+void remove_duplicate_attirbutes_in_closure (vector<string>, string );
 
 /* Begining of the main method */
 int main(int argc, char* argv[]) {
@@ -48,7 +51,6 @@ int main(int argc, char* argv[]) {
 /* Function to find the closure of a user-entered attribute */
 void find_closure(multimap<string, string> dep, int no_dep, string attr) {
 
-    int i;
     multimap<string, string> :: iterator it;
     vector<string> v;
 
@@ -70,6 +72,19 @@ void find_closure(multimap<string, string> dep, int no_dep, string attr) {
 
     /* Remove any duplicate attributes in the closure */
     remove_duplicate_attirbutes_in_closure(v, attr);
+
+    char ch;
+    cout << "\nWould you like check if "<< attr << " is a superkey ? (Y/N) : ";
+    cin >> ch;
+
+    if (ch == 'Y' || ch == 'y') {
+        /* Print if an attribute is a super key */
+        if (is_superKey(dep, v, attr)) {
+            cout << "\n'" << attr <<"' is a superkey";
+        } else {
+            cout << "\n'"<< attr << "'is not a superkey";
+        }
+    }
 }
 
 /* Function to remove duplicate elements in a vector */
@@ -81,7 +96,25 @@ void remove_duplicate_attirbutes_in_closure(vector<string> v, string attr) {
 
     // Display the final closure vector
     display_closure(v, attr);
+}
 
+/* Function that checks if a given attribute is a super key */
+bool is_superKey(multimap<string, string> dep, vector<string> c_set, string a) {
+
+    multimap<string, string> :: iterator it;
+    bool flag = true;
+
+    for (it = dep.begin(); it != dep.end(); it++) {
+        if (find(c_set.begin(), c_set.end(), it->second) != c_set.end()) {
+            continue;
+        }
+        else {
+            flag = false;
+            break;
+        }
+    }
+
+    return flag;
 }
 
 /* Function to display the content of the closure vector */
